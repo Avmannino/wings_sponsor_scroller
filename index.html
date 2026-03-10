@@ -9,6 +9,21 @@
     @font-face {
       font-family: "Lulo";
       src: url("fonts/Lulo.otf") format("truetype");
+      font-display: swap;
+    }
+
+    :root {
+      --bg: #003666;
+      --text: #ffffff;
+      --header-max: 1100px;
+      --ticker-logo-height: 195px;
+      --ticker-gap: 60px;
+      --header-pad-top: 36px;
+      --header-pad-side: 20px;
+      --header-pad-bottom: 12px;
+      --ticker-pad-top: 18px;
+      --ticker-pad-bottom: 22px;
+      --title-size: 25px;
     }
 
     * {
@@ -20,13 +35,23 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
+      min-height: 100%;
     }
 
     body {
-      background: #003666;
+      background: var(--bg);
+      color: var(--text);
       font-family: "Lulo", "Trebuchet MS", Arial, sans-serif;
-      overflow: hidden;
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       position: relative;
     }
 
@@ -34,34 +59,40 @@
     header {
       width: 100%;
       display: flex;
-      align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 36px 20px 0;
+      padding: var(--header-pad-top) var(--header-pad-side) var(--header-pad-bottom);
       position: relative;
       z-index: 2;
+      flex-shrink: 0;
     }
 
     header h1 {
       margin: 0;
-      color: #ffffff;
-      font-size: 25px;
+      width: 100%;
+      max-width: var(--header-max);
+      color: var(--text);
+      font-size: var(--title-size);
       font-weight: normal;
       line-height: 1.2;
       letter-spacing: 0.5px;
       text-align: center;
       text-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+      text-wrap: balance;
+    }
+
+    .ticker-section {
+      width: 100%;
+      margin-top: auto;
+      padding: var(--ticker-pad-top) 0 var(--ticker-pad-bottom);
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
     .ticker-wrapper {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
       width: 100%;
       overflow: hidden;
       background: transparent;
-      padding: 18px 0 22px;
     }
 
     .ticker-track {
@@ -72,11 +103,14 @@
     }
 
     .ticker-track img {
-      height: 195px;
-      margin: 0 60px;
+      height: var(--ticker-logo-height);
+      width: auto;
+      margin: 0 var(--ticker-gap);
       object-fit: contain;
+      object-position: center;
       border-radius: 10px;
       flex-shrink: 0;
+      max-width: none;
       filter: drop-shadow(1px 12px 5px rgba(0, 0, 0, 0.7));
     }
 
@@ -88,94 +122,194 @@
         transform: translateX(-50%);
       }
     }
+
+    /* ===== Large tablets / small laptops ===== */
+    @media (max-width: 1200px) {
+      :root {
+        --ticker-logo-height: 165px;
+        --ticker-gap: 42px;
+        --title-size: 22px;
+        --header-pad-top: 28px;
+        --ticker-pad-top: 14px;
+        --ticker-pad-bottom: 18px;
+      }
+    }
+
+    /* ===== Tablets ===== */
+    @media (max-width: 900px) {
+      :root {
+        --ticker-logo-height: 130px;
+        --ticker-gap: 28px;
+        --title-size: 19px;
+        --header-pad-top: 24px;
+        --header-pad-side: 16px;
+        --header-pad-bottom: 10px;
+        --ticker-pad-top: 12px;
+        --ticker-pad-bottom: 16px;
+      }
+
+      .ticker-track {
+        animation-duration: 165s;
+      }
+
+      header h1 {
+        letter-spacing: 0.3px;
+      }
+    }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 600px) {
+      :root {
+        --ticker-logo-height: 88px;
+        --ticker-gap: 16px;
+        --title-size: 13px;
+        --header-pad-top: 18px;
+        --header-pad-side: 14px;
+        --header-pad-bottom: 8px;
+        --ticker-pad-top: 10px;
+        --ticker-pad-bottom: 14px;
+      }
+
+      .page {
+        min-height: 100dvh;
+      }
+
+      .ticker-track {
+        animation-duration: 130s;
+      }
+
+      .ticker-track img {
+        border-radius: 8px;
+        filter: drop-shadow(1px 8px 4px rgba(0, 0, 0, 0.5));
+      }
+
+      header h1 {
+        line-height: 1.3;
+      }
+    }
+
+    /* ===== Very small mobile ===== */
+    @media (max-width: 400px) {
+      :root {
+        --ticker-logo-height: 72px;
+        --ticker-gap: 12px;
+        --title-size: 11px;
+        --header-pad-top: 14px;
+        --header-pad-side: 10px;
+        --ticker-pad-bottom: 10px;
+      }
+
+      .ticker-track {
+        animation-duration: 115s;
+      }
+    }
+
+    /* ===== Short screens ===== */
+    @media (max-height: 500px) {
+      :root {
+        --header-pad-top: 12px;
+        --header-pad-bottom: 6px;
+        --ticker-pad-top: 8px;
+        --ticker-pad-bottom: 8px;
+        --ticker-logo-height: 72px;
+      }
+
+      header h1 {
+        line-height: 1.15;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>THANK YOU TO OUR SPONSORS AND PARTNERS!</h1>
-  </header>
+  <div class="page">
+    <header>
+      <h1>THANK YOU TO OUR SPONSORS AND PARTNERS!</h1>
+    </header>
 
-  <div class="ticker-wrapper">
-    <div class="ticker-track">
-      <!-- First set -->
-      <img src="ads/Picture1.png" alt="Ad 1" />
-      <img src="ads/Picture2.png" alt="Ad 2" />
-      <img src="ads/Picture3.png" alt="Ad 3" />
-      <img src="ads/Picture4.png" alt="Ad 4" />
-      <img src="ads/Picture5.png" alt="Ad 5" />
-      <img src="ads/Picture6.png" alt="Ad 6" />
-      <img src="ads/Picture7.png" alt="Ad 7" />
-      <img src="ads/Picture8.png" alt="Ad 8" />
-      <img src="ads/Picture9.png" alt="Ad 9" />
-      <img src="ads/Picture10.png" alt="Ad 10" />
-      <img src="ads/Picture11.svg" alt="Ad 11" />
-      <img src="ads/Picture12.png" alt="Ad 12" />
-      <img src="ads/Picture13.png" alt="Ad 13" />
-      <img src="ads/Picture14.png" alt="Ad 14" />
-      <img src="ads/Picture15.png" alt="Ad 15" />
-      <img src="ads/Picture16.png" alt="Ad 16" />
-      <img src="ads/Picture17.png" alt="Ad 17" />
-      <img src="ads/Picture18.png" alt="Ad 18" />
-      <img src="ads/Picture19.png" alt="Ad 19" />
-      <img src="ads/Picture20.png" alt="Ad 20" />
-      <img src="ads/Picture21.png" alt="Ad 21" />
-      <img src="ads/Picture22.png" alt="Ad 22" />
-      <img src="ads/Picture23.png" alt="Ad 23" />
-      <img src="ads/Picture24.png" alt="Ad 24" />
-      <img src="ads/Picture25.png" alt="Ad 25" />
-      <img src="ads/Picture26.png" alt="Ad 26" />
-      <img src="ads/Picture27.png" alt="Ad 27" />
-      <img src="ads/Picture28.png" alt="Ad 28" />
-      <img src="ads/Picture29.png" alt="Ad 29" />
-      <img src="ads/Picture30.png" alt="Ad 30" />
-      <img src="ads/Picture31.png" alt="Ad 31" />
-      <img src="ads/Picture32.jpg" alt="Ad 32" />
-      <img src="ads/Picture33.png" alt="Ad 33" />
-      <img src="ads/Picture34.jpg" alt="Ad 34" />
-      <img src="ads/Picture35.jpg" alt="Ad 35" />
-      <img src="ads/Picture36.png" alt="Ad 36" />
-      <img src="ads/Picture37.png" alt="Ad 37" />
+    <section class="ticker-section">
+      <div class="ticker-wrapper">
+        <div class="ticker-track">
+          <!-- First set -->
+          <img src="ads/Picture1.png" alt="Ad 1" />
+          <img src="ads/Picture2.png" alt="Ad 2" />
+          <img src="ads/Picture3.png" alt="Ad 3" />
+          <img src="ads/Picture4.png" alt="Ad 4" />
+          <img src="ads/Picture5.png" alt="Ad 5" />
+          <img src="ads/Picture6.png" alt="Ad 6" />
+          <img src="ads/Picture7.png" alt="Ad 7" />
+          <img src="ads/Picture8.png" alt="Ad 8" />
+          <img src="ads/Picture9.png" alt="Ad 9" />
+          <img src="ads/Picture10.png" alt="Ad 10" />
+          <img src="ads/Picture11.svg" alt="Ad 11" />
+          <img src="ads/Picture12.png" alt="Ad 12" />
+          <img src="ads/Picture13.png" alt="Ad 13" />
+          <img src="ads/Picture14.png" alt="Ad 14" />
+          <img src="ads/Picture15.png" alt="Ad 15" />
+          <img src="ads/Picture16.png" alt="Ad 16" />
+          <img src="ads/Picture17.png" alt="Ad 17" />
+          <img src="ads/Picture18.png" alt="Ad 18" />
+          <img src="ads/Picture19.png" alt="Ad 19" />
+          <img src="ads/Picture20.png" alt="Ad 20" />
+          <img src="ads/Picture21.png" alt="Ad 21" />
+          <img src="ads/Picture22.png" alt="Ad 22" />
+          <img src="ads/Picture23.png" alt="Ad 23" />
+          <img src="ads/Picture24.png" alt="Ad 24" />
+          <img src="ads/Picture25.png" alt="Ad 25" />
+          <img src="ads/Picture26.png" alt="Ad 26" />
+          <img src="ads/Picture27.png" alt="Ad 27" />
+          <img src="ads/Picture28.png" alt="Ad 28" />
+          <img src="ads/Picture29.png" alt="Ad 29" />
+          <img src="ads/Picture30.png" alt="Ad 30" />
+          <img src="ads/Picture31.png" alt="Ad 31" />
+          <img src="ads/Picture32.jpg" alt="Ad 32" />
+          <img src="ads/Picture33.png" alt="Ad 33" />
+          <img src="ads/Picture34.jpg" alt="Ad 34" />
+          <img src="ads/Picture35.jpg" alt="Ad 35" />
+          <img src="ads/Picture36.png" alt="Ad 36" />
+          <img src="ads/Picture37.png" alt="Ad 37" />
 
-      <!-- Duplicate set for seamless loop -->
-      <img src="ads/Picture1.png" alt="Ad 1 duplicate" />
-      <img src="ads/Picture2.png" alt="Ad 2 duplicate" />
-      <img src="ads/Picture3.png" alt="Ad 3 duplicate" />
-      <img src="ads/Picture4.png" alt="Ad 4 duplicate" />
-      <img src="ads/Picture5.png" alt="Ad 5 duplicate" />
-      <img src="ads/Picture6.png" alt="Ad 6 duplicate" />
-      <img src="ads/Picture7.png" alt="Ad 7 duplicate" />
-      <img src="ads/Picture8.png" alt="Ad 8 duplicate" />
-      <img src="ads/Picture9.png" alt="Ad 9 duplicate" />
-      <img src="ads/Picture10.png" alt="Ad 10 duplicate" />
-      <img src="ads/Picture11.svg" alt="Ad 11 duplicate" />
-      <img src="ads/Picture12.png" alt="Ad 12 duplicate" />
-      <img src="ads/Picture13.png" alt="Ad 13 duplicate" />
-      <img src="ads/Picture14.png" alt="Ad 14 duplicate" />
-      <img src="ads/Picture15.png" alt="Ad 15 duplicate" />
-      <img src="ads/Picture16.png" alt="Ad 16 duplicate" />
-      <img src="ads/Picture17.png" alt="Ad 17 duplicate" />
-      <img src="ads/Picture18.png" alt="Ad 18 duplicate" />
-      <img src="ads/Picture19.png" alt="Ad 19 duplicate" />
-      <img src="ads/Picture20.png" alt="Ad 20 duplicate" />
-      <img src="ads/Picture21.png" alt="Ad 21 duplicate" />
-      <img src="ads/Picture22.png" alt="Ad 22 duplicate" />
-      <img src="ads/Picture23.png" alt="Ad 23 duplicate" />
-      <img src="ads/Picture24.png" alt="Ad 24 duplicate" />
-      <img src="ads/Picture25.png" alt="Ad 25 duplicate" />
-      <img src="ads/Picture26.png" alt="Ad 26 duplicate" />
-      <img src="ads/Picture27.png" alt="Ad 27 duplicate" />
-      <img src="ads/Picture28.png" alt="Ad 28 duplicate" />
-      <img src="ads/Picture29.png" alt="Ad 29 duplicate" />
-      <img src="ads/Picture30.png" alt="Ad 30 duplicate" />
-      <img src="ads/Picture31.png" alt="Ad 31 duplicate" />
-      <img src="ads/Picture32.jpg" alt="Ad 32 duplicate" />
-      <img src="ads/Picture33.png" alt="Ad 33 duplicate" />
-      <img src="ads/Picture34.jpg" alt="Ad 34 duplicate" />
-      <img src="ads/Picture35.jpg" alt="Ad 35 duplicate" />
-      <img src="ads/Picture36.png" alt="Ad 36 duplicate" />
-      <img src="ads/Picture37.png" alt="Ad 37 duplicate" />
-    </div>
+          <!-- Duplicate set for seamless loop -->
+          <img src="ads/Picture1.png" alt="Ad 1 duplicate" />
+          <img src="ads/Picture2.png" alt="Ad 2 duplicate" />
+          <img src="ads/Picture3.png" alt="Ad 3 duplicate" />
+          <img src="ads/Picture4.png" alt="Ad 4 duplicate" />
+          <img src="ads/Picture5.png" alt="Ad 5 duplicate" />
+          <img src="ads/Picture6.png" alt="Ad 6 duplicate" />
+          <img src="ads/Picture7.png" alt="Ad 7 duplicate" />
+          <img src="ads/Picture8.png" alt="Ad 8 duplicate" />
+          <img src="ads/Picture9.png" alt="Ad 9 duplicate" />
+          <img src="ads/Picture10.png" alt="Ad 10 duplicate" />
+          <img src="ads/Picture11.svg" alt="Ad 11 duplicate" />
+          <img src="ads/Picture12.png" alt="Ad 12 duplicate" />
+          <img src="ads/Picture13.png" alt="Ad 13 duplicate" />
+          <img src="ads/Picture14.png" alt="Ad 14 duplicate" />
+          <img src="ads/Picture15.png" alt="Ad 15 duplicate" />
+          <img src="ads/Picture16.png" alt="Ad 16 duplicate" />
+          <img src="ads/Picture17.png" alt="Ad 17 duplicate" />
+          <img src="ads/Picture18.png" alt="Ad 18 duplicate" />
+          <img src="ads/Picture19.png" alt="Ad 19 duplicate" />
+          <img src="ads/Picture20.png" alt="Ad 20 duplicate" />
+          <img src="ads/Picture21.png" alt="Ad 21 duplicate" />
+          <img src="ads/Picture22.png" alt="Ad 22 duplicate" />
+          <img src="ads/Picture23.png" alt="Ad 23 duplicate" />
+          <img src="ads/Picture24.png" alt="Ad 24 duplicate" />
+          <img src="ads/Picture25.png" alt="Ad 25 duplicate" />
+          <img src="ads/Picture26.png" alt="Ad 26 duplicate" />
+          <img src="ads/Picture27.png" alt="Ad 27 duplicate" />
+          <img src="ads/Picture28.png" alt="Ad 28 duplicate" />
+          <img src="ads/Picture29.png" alt="Ad 29 duplicate" />
+          <img src="ads/Picture30.png" alt="Ad 30 duplicate" />
+          <img src="ads/Picture31.png" alt="Ad 31 duplicate" />
+          <img src="ads/Picture32.jpg" alt="Ad 32 duplicate" />
+          <img src="ads/Picture33.png" alt="Ad 33 duplicate" />
+          <img src="ads/Picture34.jpg" alt="Ad 34 duplicate" />
+          <img src="ads/Picture35.jpg" alt="Ad 35 duplicate" />
+          <img src="ads/Picture36.png" alt="Ad 36 duplicate" />
+          <img src="ads/Picture37.png" alt="Ad 37 duplicate" />
+        </div>
+      </div>
+    </section>
   </div>
 </body>
 </html>
